@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Set Up Your PetID Tag — MoosePond Designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Karla:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- Cloudinary Upload Widget -->
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<style>
+  /* ── Design tokens (matches tag_template.html) ── */
+  :root {
+    --cream:        #F5EDE0;
+    --espresso:     #2B1B12;
+    --espresso-soft:#3A2A1D;
+    --brass:        #C9A24B;
+    --brass-dim:    #A8863C;
+    --text-on-dark: #EDE3D3;
+    --muted:        #D8C9A8;
+    --radius:       14px;
+    --radius-sm:    8px;
+  }
+  *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #141414;
+    font-family: 'Karla', sans-serif;
+    color: var(--cream);
+    min-height: 100%;
+  }
+
+  /* ── Brand header ── */
+  .brand-header {
+    background: var(--cream);
+    padding: 18px 24px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--espresso);
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+  .brand-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--brass-dim);
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  /* ── Main layout ── */
+  .container {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+  .page-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 6vw, 2rem);
+    color: var(--cream);
+    margin: 0 0 6px;
+    text-align: center;
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 0 0 32px;
+    line-height: 1.55;
+  }
+
+  /* ── Section blocks ── */
+  .section {
+    background: var(--espresso-soft);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(201,162,75,0.18);
+  }
+  .section-label {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 14px;
+  }
+
+  /* ── Form elements ── */
+  label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  input[type="text"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--espresso);
+    border: 1.5px solid rgba(201,162,75,0.3);
+    border-radius: var(--radius-sm);
+    color: var(--cream);
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+    padding: 12px 14px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--brass);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A24B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  .field-group { margin-bottom: 16px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  /* ── Photo upload ── */
+  .photo-upload-area {
+    border: 2px dashed rgba(201,162,75,0.4);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-upload-area:hover { border-color: var(--brass); }
+  .photo-upload-area.has-photo {
+    border-color: var(--brass);
+    background: rgba(201,162,75,0.05);
+    padding: 14px 20px;
+  }
+  .photo-preview {
+    display: none;
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .has-photo .photo-preview { display: block; }
+  .upload-icon { font-size: 2.5rem; line-height: 1; margin-bottom: 10px; }
+  .upload-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--brass);
+    margin: 0 0 4px;
+  }
+  .upload-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .has-photo .upload-icon { display: none; }
+  .has-photo .upload-text { font-size: 0.85rem; margin: 0; }
+  .has-photo .upload-hint { display: none; }
+
+  /* ── Contact row ── */
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .contact-row:last-child { margin-bottom: 0; }
+  .contact-num {
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.8rem;
+    color: var(--brass-dim);
+  }
+
+  /* ── Add contact button ── */
+  .add-contact-btn {
+    background: none;
+    border: 1.5px dashed rgba(201,162,75,0.4);
+    border-radius: var(--radius-sm);
+    color: var(--brass);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .add-contact-btn:hover {
+    border-color: var(--brass);
+    background: rgba(201,162,75,0.06);
+  }
+
+  /* ── Message preview ── */
+  .msg-preview {
+    background: var(--espresso);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    color: var(--text-on-dark);
+    line-height: 1.55;
+    margin-top: 10px;
+    border: 1px solid rgba(201,162,75,0.15);
+  }
+  .msg-preview strong { color: var(--cream); }
+
+  /* ── Submit button ── */
+  .submit-btn {
+    width: 100%;
+    background: var(--brass);
+    color: var(--espresso);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 18px 0;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .submit-btn:hover { background: #D4AE55; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── Error state ── */
+  .field-error {
+    font-size: 0.8rem;
+    color: #E07070;
+    margin-top: 5px;
+    display: none;
+  }
+  .field-error.visible { display: block; }
+  input.error, textarea.error, select.error {
+    border-color: #E07070;
+  }
+
+  /* ── Success screen ── */
+  #success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .success-icon { font-size: 4rem; line-height: 1; margin-bottom: 16px; }
+  .success-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--brass);
+    margin: 0 0 12px;
+  }
+  .success-body {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 34ch;
+    margin: 0 auto;
+  }
+
+  /* ── Spinner ── */
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(43,27,18,0.3);
+    border-top-color: var(--espresso);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Required note ── */
+  .required-note {
+    font-size: 0.78rem;
+    color: var(--brass-dim);
+    margin-bottom: 20px;
+    text-align: right;
+  }
+  .req { color: #C9A24B; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header class="brand-header">
+  <p class="brand-name">MoosePond Designs</p>
+  <p class="brand-sub">PetID — Tag Setup</p>
+</header>
+
+<div class="container">
+
+  <!-- Success screen (hidden until submitted) -->
+  <div id="success-screen">
+    <div class="success-icon">🐾</div>
+    <h1 class="success-title">You're all set!</h1>
+    <p class="success-body">
+      We've got everything we need. Your tag will be printed and programmed soon —
+      we'll reach out with a shipping update.
+    </p>
+  </div>
+
+  <!-- Form -->
+  <div id="form-wrapper">
+    <h1 class="page-title">Set Up Your Tag</h1>
+    <p class="page-sub">
+      Add your pet's photo, a short message, and the numbers to call
+      if someone finds them. Takes about 2 minutes.
+    </p>
+    <p class="required-note"><span class="req">*</span> Required</p>
+
+    <form id="setup-form" novalidate>
+      <!-- Hidden: slug from URL -->
+      <input type="hidden" id="slug" name="slug">
+
+      <!-- Section: Photo -->
+      <div class="section">
+        <p class="section-label">📷 Pet Photo <span class="req">*</span></p>
+        <div class="photo-upload-area" id="upload-area" onclick="openCloudinaryWidget()">
+          <img class="photo-preview" id="photo-preview" alt="Pet photo preview">
+          <div class="upload-icon">🐶</div>
+          <p class="upload-text">Tap to upload a photo</p>
+          <p class="upload-hint">JPG, PNG, or HEIC · Your pet's best shot</p>
+          <p class="upload-text" id="upload-change-text" style="display:none">Tap to change photo</p>
+        </div>
+        <input type="hidden" id="photo_url" name="photo_url">
+        <div class="field-error" id="photo-error">Please upload a photo of your pet.</div>
+      </div>
+
+      <!-- Section: Pet info -->
+      <div class="section">
+        <p class="section-label">🏷 Your Pet</p>
+
+        <div class="field-group">
+          <label for="pet_name">Pet's name <span class="req">*</span></label>
+          <input type="text" id="pet_name" name="pet_name" placeholder="e.g. Biscuit" autocomplete="off">
+          <div class="field-error" id="name-error">Please enter your pet's name.</div>
+        </div>
+
+        <div class="field-group">
+          <label for="temperament">Personality / how to approach <span class="req">*</span></label>
+          <select id="temperament" name="temperament">
+            <option value="" disabled selected>Choose one…</option>
+            <option value="friendly">Friendly — safe to approach, loves people</option>
+            <option value="shy">Shy / Timid — approach slowly, speak softly</option>
+            <option value="anxious">Anxious / Nervous — be calm and patient</option>
+            <option value="reactive">Reactive / Skittish — avoid sudden moves, don't chase</option>
+            <option value="protective">Protective / Wary of strangers — just call, don't grab</option>
+            <option value="senior">Senior / Special needs — gentle, may be slow or confused</option>
+            <option value="custom">Other — I'll write my own description</option>
+          </select>
+          <div class="field-error" id="temperament-error">Please choose a personality.</div>
+        </div>
+
+        <!-- Custom temperament phrase (shown only when "Other" is selected) -->
+        <div class="field-group" id="custom-phrase-group" style="display:none">
+          <label for="custom_phrase">Describe how to approach <span class="req">*</span></label>
+          <input type="text" id="custom_phrase" name="custom_phrase"
+                 placeholder='e.g. "I do best with slow, quiet greetings"'>
+          <div class="field-error" id="custom-phrase-error">Please describe your pet's temperament.</div>
+        </div>
+      </div>
+
+      <!-- Section: Message -->
+      <div class="section">
+        <p class="section-label">💬 Message on the Page</p>
+        <div class="field-group">
+          <label for="message">Custom message <span style="color:var(--muted);font-weight:400">(or leave blank for the default)</span></label>
+          <textarea id="message" name="message" rows="3"
+                    placeholder="Leave blank to use the default message based on your pet's personality…"></textarea>
+        </div>
+        <div class="msg-preview" id="msg-preview">
+          <em style="color:var(--brass-dim);">Choose a personality above to see the default message.</em>
+        </div>
+      </div>
+
+      <!-- Section: Contacts -->
+      <div class="section">
+        <p class="section-label">📞 Contacts to Call <span class="req">*</span></p>
+        <p style="font-size:0.85rem;color:var(--muted);margin:0 0 16px;line-height:1.5;">
+          Add up to 3 contacts. These will appear as tap-to-call buttons on the tag page.
+        </p>
+
+        <div id="contacts-list">
+          <!-- Contact 1 (always visible) -->
+          <div class="contact-row" id="contact-row-1">
+            <div class="field-group" style="margin:0">
+              <label>Name</label>
+              <input type="text" name="contact_name_1" placeholder="e.g. Sarah" autocomplete="off">
+            </div>
+            <div class="field-group" style="margin:0">
+              <label>Phone number</label>
+              <input type="tel" name="contact_phone_1" placeholder="207-555-0100" autocomplete="tel">
+            </div>
+          </div>
+
+          <!-- Contact 2 (shown after first is filled) -->
+          <div class="contact-row" id="contact-row-2" style="display:none">
+            <div class="field-group" style="margin:0">
+              <label>Name</label>
+              <input type="text" name="contact_name_2" placeholder="e.g. Mike" autocomplete="off">
+            </div>
+            <div class="field-group" style="margin:0">
+              <label>Phone number</label>
+              <input type="tel" name="contact_phone_2" placeholder="207-555-0101" autocomplete="tel">
+            </div>
+          </div>
+
+          <!-- Contact 3 (shown after second is filled) -->
+          <div class="contact-row" id="contact-row-3" style="display:none">
+            <div class="field-group" style="margin:0">
+              <label>Name</label>
+              <input type="text" name="contact_name_3" placeholder="e.g. Home" autocomplete="off">
+            </div>
+            <div class="field-group" style="margin:0">
+              <label>Phone number</label>
+              <input type="tel" name="contact_phone_3" placeholder="207-555-0102" autocomplete="tel">
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="add-contact-btn" id="add-contact-btn"
+                onclick="showNextContact()">+ Add another contact</button>
+        <div class="field-error" id="contacts-error">
+          Please add at least one contact name and phone number.
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        Submit My Tag Setup
+      </button>
+    </form>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ────────────────────────────────────────────────────────────────────────────
+// CONFIGURATION — replace these two values after Cloudinary + Apps Script setup
+// ────────────────────────────────────────────────────────────────────────────
+const CLOUDINARY_CLOUD_NAME  = "mooseponddesigns";
+const CLOUDINARY_UPLOAD_PRESET = "petid_unsigned";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4HjEj-CNFqL4V8E13FLtNfPR7gHWUEATd-edpM__3Zw6GrqVnZ7MkNrzwu4iuOWM/exec";
+
+// ────────────────────────────────────────────────────────────────────────────
+// Temperament default messages (mirrors generate_tag.py TEMPERAMENTS dict)
+// ────────────────────────────────────────────────────────────────────────────
+const TEMPERAMENT_PHRASES = {
+  friendly:   "I'm very friendly and safe to approach",
+  shy:        "I'm a little shy, so please approach slowly and speak softly",
+  anxious:    "I can get anxious around strangers, so please be calm and patient with me",
+  reactive:   "I startle easily, so please avoid sudden movements and don't chase me",
+  protective: "I can be wary of strangers, so please don't try to grab me — just call my family",
+  senior:     "I'm a senior (or have special needs) and may be slow or a little confused, so please be gentle with me",
+};
+
+function defaultMessage(petName, temperamentKey, customPhrase) {
+  const phrase = temperamentKey === "custom" ? customPhrase : TEMPERAMENT_PHRASES[temperamentKey];
+  if (!phrase) return "";
+  return `Thank you. My name is ${petName} — ${phrase}. My family loves me very much and they're looking forward to you reaching them. Their contact info is below:`;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Init: read slug from URL
+// ────────────────────────────────────────────────────────────────────────────
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug") || "";
+  document.getElementById("slug").value = slug;
+  if (!slug) {
+    console.warn("No slug in URL — form will submit without one");
+  }
+})();
+
+// ────────────────────────────────────────────────────────────────────────────
+// Cloudinary upload widget
+// ────────────────────────────────────────────────────────────────────────────
+let cloudinaryWidget;
+
+function openCloudinaryWidget() {
+  if (!cloudinaryWidget) {
+    cloudinaryWidget = cloudinary.createUploadWidget(
+      {
+        cloudName: CLOUDINARY_CLOUD_NAME,
+        uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+        sources: ["local", "camera"],
+        multiple: false,
+        cropping: false,
+        maxFileSize: 15_000_000,
+        clientAllowedFormats: ["jpg", "jpeg", "png", "heic", "heif", "webp"],
+        styles: {
+          palette: {
+            window:      "#2B1B12",
+            windowBorder:"#C9A24B",
+            tabIcon:     "#C9A24B",
+            menuIcons:   "#EDE3D3",
+            textDark:    "#2B1B12",
+            textLight:   "#F5EDE0",
+            link:        "#C9A24B",
+            action:      "#C9A24B",
+            inactiveTabIcon: "#A8863C",
+            error:       "#E07070",
+            inProgress:  "#C9A24B",
+            complete:    "#7EC07E",
+            sourceBg:    "#3A2A1D",
+          },
+          fonts: { default: { active: true } },
+        },
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          const url = result.info.secure_url;
+          document.getElementById("photo_url").value = url;
+
+          const preview = document.getElementById("photo-preview");
+          preview.src = url;
+
+          const area = document.getElementById("upload-area");
+          area.classList.add("has-photo");
+
+          document.getElementById("upload-change-text").style.display = "block";
+          document.getElementById("photo-error").classList.remove("visible");
+        }
+      }
+    );
+  }
+  cloudinaryWidget.open();
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Temperament → message preview
+// ────────────────────────────────────────────────────────────────────────────
+const temperamentSelect = document.getElementById("temperament");
+const customPhraseGroup = document.getElementById("custom-phrase-group");
+const msgPreview        = document.getElementById("msg-preview");
+
+temperamentSelect.addEventListener("change", updatePreview);
+document.getElementById("pet_name").addEventListener("input",  updatePreview);
+document.getElementById("custom_phrase").addEventListener("input", updatePreview);
+document.getElementById("message").addEventListener("input",   updatePreview);
+
+function updatePreview() {
+  const t    = temperamentSelect.value;
+  const name = document.getElementById("pet_name").value.trim() || "your pet";
+  const customPhrase = document.getElementById("custom_phrase").value.trim();
+  const manualMsg    = document.getElementById("message").value.trim();
+
+  // Show/hide custom phrase field
+  customPhraseGroup.style.display = (t === "custom") ? "block" : "none";
+
+  if (!t) {
+    msgPreview.innerHTML = '<em style="color:var(--brass-dim);">Choose a personality above to see the default message.</em>';
+    return;
+  }
+
+  const generated = defaultMessage(name, t, customPhrase);
+  const display   = manualMsg || generated;
+
+  msgPreview.innerHTML = `<strong style="color:var(--cream);">${escapeHtml(name)}</strong>'s tag will say:<br><br>"${escapeHtml(display)}"`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Add contact rows progressively
+// ────────────────────────────────────────────────────────────────────────────
+let visibleContacts = 1;
+
+function showNextContact() {
+  if (visibleContacts >= 3) {
+    document.getElementById("add-contact-btn").style.display = "none";
+    return;
+  }
+  visibleContacts++;
+  document.getElementById(`contact-row-${visibleContacts}`).style.display = "grid";
+  if (visibleContacts >= 3) {
+    document.getElementById("add-contact-btn").style.display = "none";
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Form validation
+// ────────────────────────────────────────────────────────────────────────────
+function validateForm() {
+  let ok = true;
+
+  // Photo
+  if (!document.getElementById("photo_url").value) {
+    document.getElementById("photo-error").classList.add("visible");
+    ok = false;
+  } else {
+    document.getElementById("photo-error").classList.remove("visible");
+  }
+
+  // Pet name
+  const name = document.getElementById("pet_name").value.trim();
+  if (!name) {
+    document.getElementById("pet_name").classList.add("error");
+    document.getElementById("name-error").classList.add("visible");
+    ok = false;
+  } else {
+    document.getElementById("pet_name").classList.remove("error");
+    document.getElementById("name-error").classList.remove("visible");
+  }
+
+  // Temperament
+  const t = temperamentSelect.value;
+  if (!t) {
+    temperamentSelect.classList.add("error");
+    document.getElementById("temperament-error").classList.add("visible");
+    ok = false;
+  } else {
+    temperamentSelect.classList.remove("error");
+    document.getElementById("temperament-error").classList.remove("visible");
+  }
+
+  // Custom phrase
+  if (t === "custom") {
+    const cp = document.getElementById("custom_phrase").value.trim();
+    if (!cp) {
+      document.getElementById("custom_phrase").classList.add("error");
+      document.getElementById("custom-phrase-error").classList.add("visible");
+      ok = false;
+    } else {
+      document.getElementById("custom_phrase").classList.remove("error");
+      document.getElementById("custom-phrase-error").classList.remove("visible");
+    }
+  }
+
+  // At least 1 contact
+  const n1 = document.querySelector('[name="contact_name_1"]').value.trim();
+  const p1 = document.querySelector('[name="contact_phone_1"]').value.trim();
+  if (!n1 || !p1) {
+    document.getElementById("contacts-error").classList.add("visible");
+    ok = false;
+  } else {
+    document.getElementById("contacts-error").classList.remove("visible");
+  }
+
+  return ok;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Build payload
+// ────────────────────────────────────────────────────────────────────────────
+function buildPayload() {
+  const slug    = document.getElementById("slug").value;
+  const petName = document.getElementById("pet_name").value.trim();
+  const t       = temperamentSelect.value;
+  const customPhrase = document.getElementById("custom_phrase").value.trim();
+  const manualMsg    = document.getElementById("message").value.trim();
+  const photoUrl     = document.getElementById("photo_url").value;
+
+  const finalMsg = manualMsg || defaultMessage(petName, t, customPhrase);
+
+  const contacts = [];
+  for (let i = 1; i <= 3; i++) {
+    const n = (document.querySelector(`[name="contact_name_${i}"]`)?.value || "").trim();
+    const p = (document.querySelector(`[name="contact_phone_${i}"]`)?.value || "").trim();
+    if (n && p) contacts.push({ name: n, phone: p });
+  }
+
+  return {
+    slug,
+    pet_name:      petName,
+    temperament:   t,
+    custom_phrase: customPhrase,
+    message:       finalMsg,
+    photo_url:     photoUrl,
+    contacts,
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Submit
+// ────────────────────────────────────────────────────────────────────────────
+document.getElementById("setup-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  if (!validateForm()) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const btn = document.getElementById("submit-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting…';
+
+  const payload = buildPayload();
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method:  "POST",
+      headers: { "Content-Type": "text/plain" },  // Apps Script CORS workaround
+      body:    JSON.stringify(payload),
+    });
+
+    if (!resp.ok) throw new Error(`Server error: ${resp.status}`);
+
+    // Show success
+    document.getElementById("form-wrapper").style.display = "none";
+    document.getElementById("success-screen").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+  } catch (err) {
+    console.error("Submission error:", err);
+    btn.disabled = false;
+    btn.innerHTML = "Submit My Tag Setup";
+    alert("Something went wrong submitting the form. Please try again or email us at sales@mooseponddesigns.com.");
+  }
+});
+</script>
+
+</body>
+</html>
